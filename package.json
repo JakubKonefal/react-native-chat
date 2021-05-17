@@ -33,6 +33,7 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-svg": "^12.1.1",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "jest-expo": "~41.0.0",
+    "react-native-svg-transformer": "^0.14.3",
     "typescript": "~4.0.0"
   },
   "private": true

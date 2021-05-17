@@ -1,31 +1,41 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, View } from '../components/Themed';
+import { StyleSheet, Text, View } from 'react-native';
+import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
+import RectangleTop from '../components/RectangleTop';
+import SearchIcon from '../assets/images/search.svg';
+import RoomsIcon from '../assets/images/rooms.svg';
 
 export default function RoomsScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}> Rooms Screen </Text>
+    <View style={styles.screenContainer}>
+      <RectangleTop>
+        <>
+          <Text style={styles.roomLabel}> Rooms </Text>
+          <View style={styles.searchIconContainer}>
+            <SearchIcon />
+          </View>
+          <RoomsIcon />
+        </>
+      </RectangleTop>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F0F8FF'
+    justifyContent: 'space-between',
+    backgroundColor: Colors.screenBackground,
   },
-  title: {
-    fontSize: 20,
+  roomLabel: {
+    fontSize: Typography.headingFontSize,
+    color: Typography.headingColor,
     fontWeight: 'bold',
-    color: '#5603AD'
   },
-  separator: {
-    marginVertical: 8,
-    height: 1,
-    width: '80%',
-    backgroundColor: '#4444aa'
+  searchIconContainer: {
+    marginLeft: 'auto',
+    marginRight: Spacing.iconsMargin,
+    borderRadius: VisualForms.rounded,
   },
 });

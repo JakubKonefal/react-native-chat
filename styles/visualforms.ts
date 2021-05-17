@@ -1,0 +1,6 @@
+export const rectangleTopHeight = 125;
+export const rectangleBottomHeight = 68;
+export const inputHeight = 41;
+export const cornerRadiusBig = 24;
+export const cornerRadiusSmall = 12;
+export const rounded = 50;
