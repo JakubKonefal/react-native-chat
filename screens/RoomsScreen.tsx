@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   roomLabel: {
     fontSize: Typography.headingFontSize,
-    color: Typography.headingColor,
+    color: Colors.headingColor,
     fontWeight: 'bold',
   },
   searchIconContainer: {

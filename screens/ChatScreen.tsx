@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Colors, Spacing, VisualForms } from '../styles/index';
+import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
 import RectangleTop from '../components/RectangleTop';
 import RectangleBottom from '../components/RectangleBottom';
+import Avatar from '../components/Avatar';
 import CallIcon from '../assets/images/phone.svg';
 import VideocallIcon from '../assets/images/videocall.svg';
 import { useRoute } from '@react-navigation/core';
@@ -34,7 +35,18 @@ export default function ChatScreen() {
     <View style={styles.screenContainer}>
       <RectangleTop>
         <>
-          <View style={styles.chatInfo}></View>
+          <View style={styles.chatInfo}>
+            <Avatar
+              avatar={data?.room.messages[0].user.profilePic}
+              size="medium"
+            />
+            <View style={styles.userInfo}>
+              <Text style={styles.userName}>
+                {`${data?.room.messages[0].user.firstName} ${data?.room.messages[0].user.lastName}`}
+              </Text>
+              <Text style={styles.userStatus}>Activity status unknown</Text>
+            </View>
+          </View>
           <View style={styles.callIconContainer}>
             <CallIcon />
           </View>
@@ -58,10 +70,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flexGrow: 1,
-    height: 50,
     marginRight: 15,
-    borderRadius: 20,
-    backgroundColor: '#83c',
+  },
+  userInfo: {
+    marginLeft: 8,
+  },
+  userName: {
+    alignSelf: 'flex-start',
+    fontSize: Typography.roomNameFontSize,
+    fontWeight: Typography.boldFontWeight,
+    color: Colors.headingColor,
+  },
+  userStatus: {
+    marginTop: 4,
+    color: '#fff',
+    fontSize: 14,
   },
   callIconContainer: {
     marginLeft: 'auto',

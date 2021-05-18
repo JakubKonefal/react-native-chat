@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Spacing, VisualForms, Typography } from '../styles';
-import SingleRoomPicture from './SingleRoomPicture';
+import Avatar from './Avatar';
 import { MessageType } from '../interfaces/index';
 import moment from 'moment';
 
@@ -23,7 +23,7 @@ const SingleRoom = ({
   return (
     <TouchableOpacity onPress={() => onPress(roomId)}>
       <View style={styles.singleRoom}>
-        <SingleRoomPicture roomPic={roomPic} />
+        <Avatar avatar={roomPic} size="big" />
         <View style={styles.textsContainer}>
           <Text style={styles.roomName} numberOfLines={1}>
             {name}
