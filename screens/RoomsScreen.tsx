@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
 import RectangleTop from '../components/RectangleTop';
 import SearchIcon from '../assets/images/search.svg';
@@ -9,12 +9,17 @@ import { useQuery } from '@apollo/client';
 import { GET_USER_ROOMS } from '../apollo/queries';
 import { UserRoomsType } from '../interfaces/index';
 
-export default function RoomsScreen() {
+export default function RoomsScreen({ navigation, route }: any) {
   const { data, loading } = useQuery<UserRoomsType, boolean>(GET_USER_ROOMS);
 
   if (loading) return <Text>Loading...</Text>;
 
-  console.log(data);
+  console.log(navigation);
+  console.log(route);
+
+  const onPress = () => {
+    navigation.navigate('Chat', { from: 'Rooms' });
+  };
 
   return (
     <View style={styles.screenContainer}>
@@ -29,7 +34,9 @@ export default function RoomsScreen() {
       </RectangleTop>
       <View style={styles.roomsContainer}>
         {data?.usersRooms.rooms.map((room) => (
-          <SingleRoom key={room.id} roomPic={room.roomPic} name={room.name} />
+          <TouchableOpacity key={room.id} onPress={onPress}>
+            <SingleRoom key={room.id} roomPic={room.roomPic} name={room.name} />
+          </TouchableOpacity>
         ))}
       </View>
     </View>

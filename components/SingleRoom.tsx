@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Spacing, VisualForms } from '../styles';
+import { View, Text, StyleSheet } from 'react-native';
+import { Spacing, VisualForms, Typography } from '../styles';
 import SingleRoomPicture from './SingleRoomPicture';
 
 interface SingleRoomProps {
@@ -12,7 +12,14 @@ const SingleRoom = ({ roomPic, name }: SingleRoomProps) => {
   return (
     <View style={styles.singleRoom}>
       <SingleRoomPicture roomPic={roomPic} />
-      <Text> {name} </Text>
+      <View style={styles.textsContainer}>
+        <Text style={styles.roomName} numberOfLines={1}>
+          {name}
+        </Text>
+        <Text style={styles.lastMessage} numberOfLines={1}>
+          Hey, this is last message
+        </Text>
+      </View>
     </View>
   );
 };
@@ -28,6 +35,22 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.roomVerticalPadding,
     backgroundColor: '#fff',
     borderRadius: VisualForms.cornerRadiusSmall,
+  },
+  textsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: Spacing.baseHorizontalPadding,
+    flexGrow: 1,
+    maxWidth: '75%',
+  },
+  roomName: {
+    fontSize: Typography.roomNameFontSize,
+    fontWeight: Typography.mediumFontWeight,
+    marginBottom: 4,
+  },
+  lastMessage: {
+    fontSize: Typography.messageFontSize,
+    fontWeight: Typography.normalFontWeight,
   },
 });
 
