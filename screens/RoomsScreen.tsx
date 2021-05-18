@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
 import RectangleTop from '../components/RectangleTop';
 import SearchIcon from '../assets/images/search.svg';
@@ -8,17 +8,18 @@ import SingleRoom from '../components/SingleRoom';
 import { useQuery } from '@apollo/client';
 import { GET_USER_ROOMS } from '../apollo/queries';
 import { UserRoomsType } from '../interfaces/index';
+import { useNavigation } from '@react-navigation/core';
 
-export default function RoomsScreen({ navigation, route }: any) {
+export default function RoomsScreen() {
+  const navigation = useNavigation();
   const { data, loading } = useQuery<UserRoomsType, boolean>(GET_USER_ROOMS);
 
   if (loading) return <Text>Loading...</Text>;
 
-  console.log(navigation);
-  console.log(route);
-
-  const onPress = () => {
-    navigation.navigate('Chat', { from: 'Rooms' });
+  const onPress = (roomId: string) => {
+    navigation.navigate('Chat', {
+      roomId,
+    });
   };
 
   return (
@@ -34,9 +35,13 @@ export default function RoomsScreen({ navigation, route }: any) {
       </RectangleTop>
       <View style={styles.roomsContainer}>
         {data?.usersRooms.rooms.map((room) => (
-          <TouchableOpacity key={room.id} onPress={onPress}>
-            <SingleRoom key={room.id} roomPic={room.roomPic} name={room.name} />
-          </TouchableOpacity>
+          <SingleRoom
+            key={room.id}
+            roomId={room.id}
+            roomPic={room.roomPic}
+            name={room.name}
+            onPress={onPress}
+          />
         ))}
       </View>
     </View>

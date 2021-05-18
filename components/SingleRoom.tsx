@@ -1,26 +1,30 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Spacing, VisualForms, Typography } from '../styles';
 import SingleRoomPicture from './SingleRoomPicture';
 
 interface SingleRoomProps {
+  roomId: string;
   roomPic: string;
   name: string;
+  onPress: (roomId: string) => void;
 }
 
-const SingleRoom = ({ roomPic, name }: SingleRoomProps) => {
+const SingleRoom = ({ roomId, roomPic, name, onPress }: SingleRoomProps) => {
   return (
-    <View style={styles.singleRoom}>
-      <SingleRoomPicture roomPic={roomPic} />
-      <View style={styles.textsContainer}>
-        <Text style={styles.roomName} numberOfLines={1}>
-          {name}
-        </Text>
-        <Text style={styles.lastMessage} numberOfLines={1}>
-          Hey, this is last message
-        </Text>
+    <TouchableOpacity onPress={() => onPress(roomId)}>
+      <View style={styles.singleRoom}>
+        <SingleRoomPicture roomPic={roomPic} />
+        <View style={styles.textsContainer}>
+          <Text style={styles.roomName} numberOfLines={1}>
+            {name}
+          </Text>
+          <Text style={styles.lastMessage} numberOfLines={1}>
+            Hey, this is last message
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -5,8 +5,30 @@ import RectangleTop from '../components/RectangleTop';
 import RectangleBottom from '../components/RectangleBottom';
 import CallIcon from '../assets/images/phone.svg';
 import VideocallIcon from '../assets/images/videocall.svg';
+import { useRoute } from '@react-navigation/core';
+import { RouteProp } from '@react-navigation/native';
+import { useQuery } from '@apollo/client';
+import { GET_ROOM_DATA } from '../apollo/queries';
+
+type ParamList = {
+  Chat: {
+    roomId: string;
+  };
+};
 
 export default function TabTwoScreen() {
+  const route = useRoute<RouteProp<ParamList, 'Chat'>>();
+
+  const { data, loading } = useQuery(GET_ROOM_DATA, {
+    variables: {
+      roomId: route.params.roomId,
+    },
+  });
+
+  console.log(data);
+
+  if (loading) return <Text>Loading...</Text>;
+
   return (
     <View style={styles.screenContainer}>
       <RectangleTop>
