@@ -4,7 +4,7 @@ import { View, Image } from 'react-native';
 import DefaultRoomPicture from '../assets/images/profile.svg';
 
 interface SingleRoomPictureProps {
-  roomPic: string;
+  roomPic: string | undefined;
 }
 
 const SingleRoomPicture = ({ roomPic }: SingleRoomPictureProps) =>

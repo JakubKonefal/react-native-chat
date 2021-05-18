@@ -2,15 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Spacing, VisualForms, Typography } from '../styles';
 import SingleRoomPicture from './SingleRoomPicture';
+import { MessageType } from '../interfaces/index';
+import moment from 'moment';
 
 interface SingleRoomProps {
-  roomId: string;
-  roomPic: string;
-  name: string;
-  onPress: (roomId: string) => void;
+  roomId: string | undefined;
+  roomPic: string | undefined;
+  name: string | undefined;
+  latestMessage: MessageType | undefined;
+  onPress: (roomId: string | undefined) => void;
 }
 
-const SingleRoom = ({ roomId, roomPic, name, onPress }: SingleRoomProps) => {
+const SingleRoom = ({
+  roomId,
+  roomPic,
+  name,
+  latestMessage,
+  onPress,
+}: SingleRoomProps) => {
   return (
     <TouchableOpacity onPress={() => onPress(roomId)}>
       <View style={styles.singleRoom}>
@@ -20,9 +29,12 @@ const SingleRoom = ({ roomId, roomPic, name, onPress }: SingleRoomProps) => {
             {name}
           </Text>
           <Text style={styles.lastMessage} numberOfLines={1}>
-            Hey, this is last message
+            {latestMessage?.body}
           </Text>
         </View>
+        <Text style={styles.lastActive}>
+          {moment(latestMessage?.insertedAt).startOf('minutes').fromNow()}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,6 +45,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    position: 'relative',
     width: '100%',
     marginBottom: Spacing.roomBottomMargin,
     paddingHorizontal: Spacing.baseHorizontalPadding,
@@ -55,6 +68,13 @@ const styles = StyleSheet.create({
   lastMessage: {
     fontSize: Typography.messageFontSize,
     fontWeight: Typography.normalFontWeight,
+  },
+  lastActive: {
+    position: 'absolute',
+    top: 8,
+    right: 16,
+    fontSize: Typography.lastActiveFontSize,
+    color: Typography.lastActiveColor,
   },
 });
 

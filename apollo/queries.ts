@@ -33,11 +33,30 @@ export const GET_ROOM_DATA = gql`
       id
       messages {
         id
+        body
+        insertedAt
+        user {
+          id
+          profilePic
+        }
       }
       name
       roomPic
       user {
         id
+      }
+    }
+  }
+`;
+
+export const GET_ROOM_MESSAGES = gql`
+  query getRoomData($roomId: String!) {
+    room(id: $roomId) {
+      id
+      messages {
+        id
+        body
+        insertedAt
       }
     }
   }
