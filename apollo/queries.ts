@@ -17,6 +17,8 @@ export const GET_USER_ROOMS = gql`
     usersRooms {
       rooms {
         id
+        name
+        roomPic
       }
       user {
         id
