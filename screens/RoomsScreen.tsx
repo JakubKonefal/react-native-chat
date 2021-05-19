@@ -6,37 +6,21 @@ import SearchIcon from '../assets/images/search.svg';
 import RoomsIcon from '../assets/images/rooms.svg';
 import SingleRoom from '../components/SingleRoom';
 import { useQuery } from '@apollo/client';
-import { GET_USER_ROOMS, GET_ROOM_DATA } from '../apollo/queries';
-import { UserRoomsType, RoomDataType } from '../interfaces/index';
-import { useNavigation } from '@react-navigation/core';
+import { GET_USER_ROOMS } from '../apollo/queries';
+import { UserRoomsType } from '../interfaces/index';
+import { useFonts, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
 export default function RoomsScreen() {
-  const navigation = useNavigation();
   const { data, loading } = useQuery<UserRoomsType, boolean>(GET_USER_ROOMS);
 
-  const onPress = (roomId: string | undefined) => {
-    navigation.navigate('Chat', {
-      roomId,
-    });
-  };
+  const [fontsLoaded, error] = useFonts({
+    Poppins_700Bold,
+  });
 
   if (loading) return <Text>Loading...</Text>;
 
   if (data) {
     const roomsIds = data.usersRooms.rooms.map((room) => room.id);
-    const rooms = roomsIds.map((id) => {
-      const response = useQuery<RoomDataType>(GET_ROOM_DATA, {
-        variables: {
-          roomId: id,
-        },
-      });
-
-      if (response.data) {
-        return {
-          ...response.data.room,
-        };
-      }
-    });
 
     return (
       <View style={styles.screenContainer}>
@@ -50,19 +34,8 @@ export default function RoomsScreen() {
           </>
         </RectangleTop>
         <View style={styles.roomsContainer}>
-          {rooms.map((room) => {
-            const roomMessagesArray = [...room!.messages];
-            const latestRoomMessage = roomMessagesArray.pop();
-            return (
-              <SingleRoom
-                key={room!.id}
-                roomId={room!.id}
-                roomPic={room!.roomPic}
-                name={room!.name}
-                latestMessage={latestRoomMessage}
-                onPress={onPress}
-              />
-            );
+          {roomsIds.map((roomId) => {
+            return <SingleRoom key={roomId} roomId={roomId} />;
           })}
         </View>
       </View>
@@ -77,9 +50,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.screenBackground,
   },
   roomLabel: {
+    fontFamily: 'Poppins_700Bold',
     fontSize: Typography.headingFontSize,
     color: Colors.headingColor,
-    fontWeight: 'bold',
   },
   searchIconContainer: {
     marginLeft: 'auto',

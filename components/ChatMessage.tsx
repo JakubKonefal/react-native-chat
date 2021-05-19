@@ -8,8 +8,6 @@ interface ChatMessageProps {
 }
 
 const ChatMessage = ({ body, myMessage }: ChatMessageProps) => {
-  console.log(myMessage);
-
   return (
     <View
       style={[

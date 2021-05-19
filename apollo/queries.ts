@@ -51,3 +51,11 @@ export const GET_ROOM_MESSAGES = gql`
     }
   }
 `;
+
+export const SEND_MESSAGE = gql`
+  mutation sendMsg($body: String!, $roomId: String!) {
+    sendMessage(body: $body, roomId: $roomId) {
+      id
+    }
+  }
+`;

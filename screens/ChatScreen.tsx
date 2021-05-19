@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
 import RectangleTop from '../components/RectangleTop';
 import RectangleBottom from '../components/RectangleBottom';
@@ -31,8 +37,6 @@ export default function ChatScreen() {
 
   if (loading) return <Text>Loading...</Text>;
 
-  console.log(data);
-
   return (
     <View style={styles.screenContainer}>
       <RectangleTop>
@@ -43,10 +47,12 @@ export default function ChatScreen() {
               size="medium"
             />
             <View style={styles.userInfo}>
-              <Text style={styles.userName}>
+              <Text style={styles.userName} numberOfLines={1}>
                 {`${data?.room.messages[0].user.firstName} ${data?.room.messages[0].user.lastName}`}
               </Text>
-              <Text style={styles.userStatus}>Activity status unknown</Text>
+              <Text style={styles.userStatus} numberOfLines={1}>
+                Activity status unknown
+              </Text>
             </View>
           </View>
           <View style={styles.callIconContainer}>
@@ -60,18 +66,13 @@ export default function ChatScreen() {
           <ChatMessage
             key={msg.id}
             body={msg.body}
-            myMessage={msg.id === myUserId}
+            myMessage={msg.user.id === myUserId}
           />
         ))}
-        <ChatMessage key={1} body={'My test message!'} myMessage={true} />
-        <ChatMessage
-          key={2}
-          body={'My lorem ipsum longer message consisting of many characters'}
-          myMessage={true}
-        />
-        <ChatMessage key={3} body={'Not my message again'} myMessage={false} />
       </ScrollView>
-      <RectangleBottom />
+      <KeyboardAvoidingView behavior="padding">
+        <RectangleBottom roomId={route.params.roomId} />
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   userName: {
     alignSelf: 'flex-start',
     fontSize: Typography.roomNameFontSize,
-    fontWeight: Typography.boldFontWeight,
+    fontWeight: Typography.headingFontWeight,
     color: Colors.headingColor,
   },
   userStatus: {

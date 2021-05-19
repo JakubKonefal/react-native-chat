@@ -1,32 +1,51 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Spacing, VisualForms, Typography } from '../styles';
+import { Spacing, VisualForms, Typography, Colors } from '../styles';
 import Avatar from './Avatar';
-import { MessageType } from '../interfaces/index';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/core';
+import { useQuery } from '@apollo/client';
+import { GET_ROOM_DATA } from '../apollo/queries';
+import { RoomDataType } from '../interfaces/index';
+import { useFonts, Poppins_500Medium } from '@expo-google-fonts/poppins';
 
 interface SingleRoomProps {
   roomId: string | undefined;
-  roomPic: string | undefined;
-  name: string | undefined;
-  latestMessage: MessageType | undefined;
-  onPress: (roomId: string | undefined) => void;
 }
 
-const SingleRoom = ({
-  roomId,
-  roomPic,
-  name,
-  latestMessage,
-  onPress,
-}: SingleRoomProps) => {
+const SingleRoom = ({ roomId }: SingleRoomProps) => {
+  const [fontsLoaded, error] = useFonts({
+    Poppins_500Medium,
+  });
+
+  const navigation = useNavigation();
+  const { data, loading } = useQuery<RoomDataType>(GET_ROOM_DATA, {
+    variables: {
+      roomId,
+    },
+  });
+
+  const onPress = (roomId: string | undefined) => {
+    navigation.navigate('Chat', {
+      roomId,
+    });
+  };
+
+  let latestMessage;
+
+  if (data) {
+    latestMessage = [...data!.room.messages].pop();
+  }
+
+  if (loading) return <Text>Loading...</Text>;
+
   return (
     <TouchableOpacity onPress={() => onPress(roomId)}>
       <View style={styles.singleRoom}>
-        <Avatar avatar={roomPic} size="big" />
+        <Avatar avatar={data?.room.roomPic} size="big" />
         <View style={styles.textsContainer}>
           <Text style={styles.roomName} numberOfLines={1}>
-            {name}
+            {data?.room.name}
           </Text>
           <Text style={styles.lastMessage} numberOfLines={1}>
             {latestMessage?.body}
@@ -61,6 +80,7 @@ const styles = StyleSheet.create({
     maxWidth: '75%',
   },
   roomName: {
+    fontFamily: 'Poppins_500Medium',
     fontSize: Typography.roomNameFontSize,
     fontWeight: Typography.mediumFontWeight,
     marginBottom: 4,
@@ -74,7 +94,7 @@ const styles = StyleSheet.create({
     top: 8,
     right: 16,
     fontSize: Typography.lastActiveFontSize,
-    color: Typography.lastActiveColor,
+    color: Colors.lastActiveColor,
   },
 });
 
