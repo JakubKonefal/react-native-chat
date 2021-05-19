@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { Colors, Spacing, Typography, VisualForms } from '../styles/index';
 import RectangleTop from '../components/RectangleTop';
 import RectangleBottom from '../components/RectangleBottom';
 import Avatar from '../components/Avatar';
+import ChatMessage from '../components/ChatMessage';
 import CallIcon from '../assets/images/phone.svg';
 import VideocallIcon from '../assets/images/videocall.svg';
 import { useRoute } from '@react-navigation/core';
 import { RouteProp } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { GET_ROOM_DATA } from '../apollo/queries';
+import { myUserId } from '../apollo/index';
 import { RoomDataType } from '../interfaces';
 
 type ParamList = {
@@ -53,6 +55,22 @@ export default function ChatScreen() {
           <VideocallIcon />
         </>
       </RectangleTop>
+      <ScrollView contentContainerStyle={styles.messagesContainer}>
+        {data?.room.messages.map((msg) => (
+          <ChatMessage
+            key={msg.id}
+            body={msg.body}
+            myMessage={msg.id === myUserId}
+          />
+        ))}
+        <ChatMessage key={1} body={'My test message!'} myMessage={true} />
+        <ChatMessage
+          key={2}
+          body={'My lorem ipsum longer message consisting of many characters'}
+          myMessage={true}
+        />
+        <ChatMessage key={3} body={'Not my message again'} myMessage={false} />
+      </ScrollView>
       <RectangleBottom />
     </View>
   );
@@ -90,5 +108,14 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
     marginRight: Spacing.iconsMargin,
     borderRadius: VisualForms.rounded,
+  },
+  messagesContainer: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    width: '100%',
+    overflow: 'scroll',
+    paddingLeft: Spacing.messageContainerLeftPadding,
+    paddingRight: Spacing.messageContainerRightPadding,
+    paddingBottom: Spacing.messageContainerBottomPadding,
   },
 });
